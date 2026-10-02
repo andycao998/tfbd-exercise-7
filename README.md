@@ -4,7 +4,7 @@ This project implements a small clinic-booking assistant running on AgentCore Ru
 
 
 ## Disclaimer
-I wasn't able to finish or even test the functionality of this lab. If I had another day, I would start with testing the functionality in agentcore dev and making sure it ran. After confirming it works as intended, I would work on tests and FINDINGS.md
+I made progress on stubbing out my code and getting the `agentcore dev` environment to launch, but I ran out of time. I was not able to test any functionality I wrote for this lab. If I had another day, I would start with testing in `agentcore dev` and making sure it ran. This includes confirming I can connect to the Bedrock Guardrail I created and AWS Comprehend. After confirming it works as intended, I would work on tests for the leaks to confirm PII is handed in all cases. Finally, I would write my findings in FINDINGS.md.
 
 
 ## Run locally
