@@ -1,108 +1,18 @@
-# AgentCore Project
+# Clinic Booking Privacy Lab
 
-This project was created with the [AgentCore CLI](https://github.com/aws/agentcore-cli).
+This project implements a small clinic-booking assistant running on AgentCore Runtime. It reads a fake patient booking record, forwards only the minimal partner-approved subset, and writes sanitized booking facts to disk without raw PII.
 
-## Project Structure
 
-```
-my-project/
-├── AGENTS.md               # AI coding assistant context
-├── agentcore/
-│   ├── agentcore.json      # Project config (agents, memories, credentials, gateways, evaluators)
-│   ├── aws-targets.json    # Deployment targets (account + region)
-│   ├── .env.local          # Secrets — API keys (gitignored)
-│   ├── .llm-context/       # TypeScript type definitions for AI assistants
-│   │   ├── agentcore.ts    # AgentCoreProjectSpec types
-│   │   └── aws-targets.ts  # Deployment target types
-│   └── cdk/                # CDK infrastructure (@aws/agentcore-cdk)
-├── app/                    # Agent application code
-└── evaluators/             # Custom evaluator code (if any)
-```
+## Disclaimer
+I wasn't able to finish or even test the functionality of this lab. If I had another day, I would start with testing the functionality in agentcore dev and making sure it ran. After confirming it works as intended, I would work on tests and FINDINGS.md
 
-## Getting Started
 
-### Prerequisites
+## Run locally
+`agentcore dev`
 
-- **Node.js** 20.x or later
-- **Python 3.10+** and **uv** for Python agents ([install uv](https://docs.astral.sh/uv/getting-started/installation/))
-- **AWS credentials** configured (`aws configure` or environment variables)
-- **Docker** (only for Container build agents)
+## Relevant files
 
-### Development
-
-Run your agent locally:
-
-```bash
-agentcore dev
-```
-
-### Validate Invocation Input
-
-Validate runtime invocation payloads before forwarding them to an agent framework. Keep user prompts typed as strings
-and pass only prompt text to the agent.
-
-### Deployment
-
-Deploy to AWS:
-
-```bash
-agentcore deploy
-```
-
-## Commands
-
-| Command | Description |
-| --- | --- |
-| `agentcore create` | Create a new AgentCore project |
-| `agentcore add` | Add resources (agent, memory, credential, gateway, evaluator, policy) |
-| `agentcore remove` | Remove resources |
-| `agentcore dev` | Run agent locally with hot-reload |
-| `agentcore deploy` | Deploy to AWS via CDK |
-| `agentcore status` | Show deployment status |
-| `agentcore invoke` | Invoke agent (local or deployed) |
-| `agentcore logs` | View agent logs |
-| `agentcore traces` | View agent traces |
-| `agentcore eval` | Run evaluations |
-| `agentcore package` | Package agent artifacts |
-| `agentcore validate` | Validate configuration |
-| `agentcore pause` | Pause a deployed agent |
-| `agentcore resume` | Resume a paused agent |
-| `agentcore fetch` | Fetch remote resource definitions |
-| `agentcore import` | Import existing resources |
-| `agentcore update` | Check for CLI updates |
-
-## Configuration
-
-Edit the JSON files in `agentcore/` to configure your project. See `agentcore/.llm-context/` for type definitions and validation constraints.
-
-The project uses a **flat resource model** — agents, memories, credentials, gateways, evaluators, and policies are top-level arrays in `agentcore.json`. Resources are independent; agents discover memories and credentials at runtime via environment variables or SDK calls.
-
-## Resources
-
-| Resource | Purpose |
-| --- | --- |
-| Agent (runtime) | HTTP, MCP, or A2A agent deployed to AgentCore Runtime |
-| Memory | Persistent context storage with configurable strategies |
-| Credential | API key or OAuth credential providers |
-| Gateway | MCP gateway that routes tool calls to targets |
-| Gateway Target | Tool implementation (Lambda, MCP server, OpenAPI, Smithy, API Gateway) |
-| Evaluator | Custom LLM-as-a-Judge or code-based evaluation |
-| Online Eval Config | Continuous evaluation pipeline for deployed agents |
-| Policy | Cedar authorization policies for gateway tools |
-
-### Agent Types
-
-- **Template agents**: Created from framework templates (Strands, LangChain/LangGraph, GoogleADK, OpenAI Agents, Autogen)
-- **BYO agents**: Bring your own code with `agentcore add agent --type byo`
-- **Import agents**: Import existing Bedrock agents with `agentcore import`
-
-### Build Types
-
-- **CodeZip**: Python source packaged as a zip and deployed directly to AgentCore Runtime
-- **Container**: Docker image built via CodeBuild (ARM64), pushed to ECR, and deployed to AgentCore Runtime
-
-## Documentation
-
-- [AgentCore CLI](https://github.com/aws/agentcore-cli)
-- [AgentCore CDK Constructs](https://github.com/aws/agentcore-l3-cdk-constructs)
-- [Amazon Bedrock AgentCore](https://aws.amazon.com/bedrock/agentcore/)
+- `app/LabAgent/controls.py` - `for_partner()` and `for_storage()`
+- `app/LabAgent/tools.py` - fake backing-store lookup and outbound contact tool
+- `app/LabAgent/store.py` - sanitized persistence helper
+- `FINDINGS.md` - the required evaluation write-up
